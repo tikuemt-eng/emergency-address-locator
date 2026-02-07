@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>救急搬送 住所特定アプリ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Agency+FB&family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="dark-theme">
+    <div class="app-container">
+        <header>
+            <div class="header-content">
+                <div class="spacer" style="width: 44px;"></div>
+                <div class="header-center">
+                    <div class="status-indicator">
+                        <span class="status-dot pulse"></span>
+                        <span class="status-text">EMERGENCY ACTIVE</span>
+                    </div>
+                    <div class="title-container">
+                        <h1>救急住所特定</h1>
+                        <p class="subtitle">EMERGENCY ADDRESS LOCATOR</p>
+                    </div>
+                    <div class="time-display" id="currentTime">00:00:00</div>
+                </div>
+                <div class="header-actions">
+                    <button id="settingsButton" class="btn-icon">⚙️</button>
+                </div>
+            </div>
+            <div class="header-glow"></div>
+        </header>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>設定</h2>
+                <div class="input-group">
+                    <label for="googleApiKey">Google Maps API Key (任意)</label>
+                    <p class="help-text">検索精度を向上させる場合はAPIキーを入力してください</p>
+                    <input type="password" id="googleApiKey" placeholder="AIza...">
+                </div>
+                <button id="saveSettings" class="btn-primary w-100 mt-xl">保存して閉じる</button>
+                <button id="closeSettings" class="btn-text">キャンセル</button>
+            </div>
+        </div>
+
+        <main>
+            <section class="search-section">
+                <div class="input-group">
+                    <label for="zipcode">郵便番号 (ハイフンなし)</label>
+                    <div class="search-box">
+                        <input type="number" id="zipcode" pattern="\d{7}" placeholder="1234567" inputmode="numeric">
+                        <button id="searchButton" class="btn-primary">検索</button>
+                    </div>
+                </div>
+
+                <!-- Google Maps Search (Hidden by default, shown if API Key exists) -->
+                <div class="input-group mt-xl hidden" id="googleSearchContainer">
+                    <label for="googleSearchInput" style="color: var(--accent-orange);">📍 Googleマップ検索 (施設名・住所)</label>
+                    <input type="text" id="googleSearchInput" placeholder="施設名や住所の一部を入力..." autocomplete="off">
+                </div>
+
+                <div class="input-group mt-xl">
+                    <label for="addressInput">住所詳細 (手入力・音声・編集用)</label>
+                    <div class="input-with-icon">
+                        <input type="text" id="addressInput" placeholder="ここに住所が確定されます。番地を追記してください。" autocomplete="off">
+                        <button id="micButton" class="btn-mic" title="音声入力">🎤</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="clearButton" class="btn-outline">クリア</button>
+                    <button id="copyButton" class="btn-outline">住所コピー</button>
+                </div>
+            </section>
+
+            <section class="navigation-section">
+                <button id="mapButton" class="btn-map">
+                    <div class="btn-content">
+                        <span class="icon">📍</span>
+                        <div class="text-group">
+                            <span class="main-text">GOOGLE MAP で開く</span>
+                            <span class="sub-text">緊急走行ルートを開始</span>
+                        </div>
+                    </div>
+                </button>
+            </section>
+
+            <!-- History List Container -->
+            <div class="history-list-container">
+                <div class="history-header">
+                    <h3>📜 最近の履歴</h3>
+                    <button id="clearHistory" class="btn-text-sm">履歴削除</button>
+                </div>
+                <ul id="historyList" class="history-list">
+                    <!-- History items will be injected here -->
+                    <li class="empty-history">履歴はありません</li>
+                </ul>
+                </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Paramedic Support System</p>
+        </footer>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
